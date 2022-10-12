@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "134978070466",
+    "project_id": "ijob-89bc9",
+    "storage_bucket": "ijob-89bc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134978070466:android:d4e46900be535f672e585b",
+        "android_client_info": {
+          "package_name": "com.example.ijob"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134978070466-oevp8gu1tpttp9eh12lu3o6r26r5mail.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBinQq9HaCKLSbyAoDbhJXAumPPk-ha6eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134978070466-oevp8gu1tpttp9eh12lu3o6r26r5mail.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
