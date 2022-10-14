@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'layout.dart';
+import '../styles/layout.dart';
 
 class GlobalMethod {
   static void showErrorDialog({required BuildContext context, required String error}) {
@@ -11,7 +11,7 @@ class GlobalMethod {
           title: Row(
             children: const [
               Padding(
-                padding: EdgeInsets.all(Layout.appPadding),
+                padding: EdgeInsets.all(layout.appPadding),
                 child: Icon(
                   Icons.warning_amber_outlined,
                   color: Colors.grey,
@@ -35,8 +35,8 @@ class GlobalMethod {
           actions: [
             TextButton(
               onPressed: () {
-								Navigator.canPop(context) ? Navigator.pop(context) : null;
-							},
+                Navigator.canPop(context) ? Navigator.pop(context) : null;
+              },
               child: const Text(
                 'OK',
                 style: TextStyle(color: Colors.red),

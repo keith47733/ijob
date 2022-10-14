@@ -1,14 +1,19 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:ijob/services/global_methods.dart';
 import 'package:ijob/services/global_variables.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/layout.dart';
-import '../services/text_style.dart';
+import '../styles/clr.dart';
+import '../styles/layout.dart';
+import '../styles/txt.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -34,11 +39,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final FocusNode _phoneFocusNode = FocusNode();
 
   final TextEditingController _phoneController = TextEditingController();
-  final FocusNode _locationFocusNode = FocusNode();
+  final FocusNode _addressFocusNode = FocusNode();
 
-  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   bool _isLoading = false;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? imageUrl;
 
   @override
   void initState() {
@@ -66,6 +74,15 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _phoneFocusNode.dispose();
+    _addressFocusNode.dispose();
     super.dispose();
   }
 
@@ -78,7 +95,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           Container(
             color: Colors.black54,
             child: Padding(
-              padding: const EdgeInsets.all(Layout.appPadding),
+              padding: const EdgeInsets.all(layout.appPadding),
               child: ListView(
                 children: [
                   _signUpAvatar(),
@@ -87,29 +104,29 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _nameFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _emailFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _passwordFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _phoneFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding * 2),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding * 2),
                           child: _locationFormField(),
                         ),
                         _isLoading
                             ? _progressIndicator()
                             : Padding(
-                                padding: const EdgeInsets.all(Layout.appPadding),
+                                padding: const EdgeInsets.all(layout.appPadding),
                                 child: _signUpButton(),
                               ),
                         _haveAccount(),
@@ -143,7 +160,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   Widget _signUpAvatar() {
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(Layout.appPadding * 2),
+      padding: const EdgeInsets.all(layout.appPadding * 2),
       child: Align(
         alignment: Alignment.center,
         child: GestureDetector(
@@ -155,14 +172,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
               height: size.width * 0.34,
               width: size.width * 0.34,
               decoration: BoxDecoration(
-                color: Style.lightPrimaryColor.withOpacity(0.3),
-                border: Border.all(width: 2, color: Style.passiveColor),
-                borderRadius: BorderRadius.circular(Layout.appRadius * 2),
+                color: clr.lightPrimary.withOpacity(0.3),
+                border: Border.all(width: 2, color: clr.passive),
+                borderRadius: BorderRadius.circular(layout.appRadius * 2),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(Layout.appRadius * 2),
+                borderRadius: BorderRadius.circular(layout.appRadius * 2),
                 child: imageFile == null
-                    ? const Icon(Icons.camera_enhance_sharp, color: Style.passiveColor, size: 50)
+                    ? const Icon(Icons.camera_enhance_sharp, color: clr.passive, size: 50)
                     : Image.file(imageFile!, fit: BoxFit.fill),
               ),
             ),
@@ -185,19 +202,19 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: const InputDecoration(
         hintText: 'Name or company',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color:Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -216,19 +233,19 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: const InputDecoration(
         hintText: 'Email',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -248,7 +265,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: InputDecoration(
         suffixIcon: GestureDetector(
           onTap: () {
@@ -258,20 +275,20 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           },
           child: Icon(
             _obscureText ? Icons.visibility : Icons.visibility_off,
-            color:  Style.defaultColor,
+            color: clr.light,
           ),
         ),
         hintText: 'Password',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color:Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -280,7 +297,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   Widget _phoneFormField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
-      onEditingComplete: () => FocusScope.of(context).requestFocus(_locationFocusNode),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_addressFocusNode),
       keyboardType: TextInputType.phone,
       controller: _phoneController,
       validator: (value) {
@@ -290,19 +307,19 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: const InputDecoration(
         hintText: 'Phone number',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -311,9 +328,9 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   Widget _locationFormField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
-      onEditingComplete: () => FocusScope.of(context).requestFocus(_locationFocusNode),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_addressFocusNode),
       keyboardType: TextInputType.text,
-      controller: _locationController,
+      controller: _addressController,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter a valid address';
@@ -321,19 +338,19 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: const InputDecoration(
         hintText: 'Personal or company address',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color:Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -351,20 +368,20 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
 
   Widget _signUpButton() {
     return MaterialButton(
-      onPressed: () {}, // CREATE SUBMIT FORM ON SIGNUP
-      elevation: Layout.appElevation,
-      color: Style.primaryColor,
+      onPressed: _submitFormOnSignup, // CREATE SUBMIT FORM ON SIGNUP
+      elevation: layout.appElevation,
+      color: clr.primary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Layout.appRadius),
+        borderRadius: BorderRadius.circular(layout.appRadius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Padding(
-            padding: EdgeInsets.all(Layout.appPadding),
+            padding: EdgeInsets.all(layout.appPadding),
             child: Text(
               'Sign up',
-              style: Style.button,
+              style: txt.button,
             ),
           ),
         ],
@@ -379,14 +396,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           children: [
             const TextSpan(
               text: 'Already have an account?',
-              style: Style.textDefault,
+              style: txt.bodyDefaultLight,
             ),
             const TextSpan(text: '     '),
             TextSpan(
               recognizer: TapGestureRecognizer()
                 ..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
               text: 'Login',
-              style: Style.textButtonLarge,
+              style: txt.mediumTextButton,
             ),
           ],
         ),
@@ -412,15 +429,15 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 child: Row(
                   children: const [
                     Padding(
-                      padding: EdgeInsets.all(Layout.appPadding / 2),
+                      padding: EdgeInsets.all(layout.appPadding / 2),
                       child: Icon(
                         Icons.camera,
-                        color: Style.primaryColor,
+                        color: clr.primary,
                       ),
                     ),
                     Text(
                       '  Camera',
-                      style: Style.textDialog,
+                      style: txt.dialogDark,
                     ),
                   ],
                 ),
@@ -432,15 +449,15 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 child: Row(
                   children: const [
                     Padding(
-                      padding: EdgeInsets.all(Layout.appPadding / 2),
+                      padding: EdgeInsets.all(layout.appPadding / 2),
                       child: Icon(
                         Icons.image,
-                        color: Style.primaryColor,
+                        color: clr.primary,
                       ),
                     ),
                     Text(
                       '  Gallery',
-                      style: Style.textDialog,
+                      style: txt.dialogDark,
                     ),
                   ],
                 ),
@@ -477,5 +494,55 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
         },
       );
     }
+  }
+
+  void _submitFormOnSignup() async {
+    final isValid = _signUpFormKey.currentState!.validate();
+    if (isValid) {
+      if (imageFile == null) {
+        GlobalMethod.showErrorDialog(context: context, error: 'Please provde a user image');
+        return;
+      }
+      setState(
+        () {
+          _isLoading = true;
+        },
+      );
+      try {
+        await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text.trim().toLowerCase(),
+          password: _passwordController.text.trim(),
+        );
+        final User? user = _auth.currentUser;
+        final uID = user!.uid;
+        final ref = FirebaseStorage.instance.ref().child('user_images').child('$uID.jpg');
+        await ref.putFile(imageFile!);
+        imageUrl = await ref.getDownloadURL();
+        FirebaseFirestore.instance.collection('users').doc(uID).set(
+          {
+            'id': uID,
+            'user_image': imageUrl,
+            'name': _nameController.text,
+            'email': _emailController.text,
+            'phone_number': _phoneController.text,
+            'address': _addressController.text,
+            'created': Timestamp.now(),
+          },
+        );
+        Navigator.canPop(context) ? Navigator.pop(context) : null;
+      } catch (error) {
+        setState(
+          () {
+            _isLoading = false;
+          },
+        );
+        GlobalMethod.showErrorDialog(context: context, error: error.toString());
+      }
+    }
+    setState(
+      () {
+        _isLoading = false;
+      },
+    );
   }
 }

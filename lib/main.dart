@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'login/login.dart';
-import 'services/text_style.dart';
+import 'styles/txt.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
               body: Center(
                 child: Text(
                   'iJob is being initialized',
-                  style: Style.textLarge,
+                  style: txt.bodyMediumLight,
                 ),
               ),
             ),
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.black,
               primarySwatch: Colors.blue,
-            fontFamily: 'Signatra',
-						),
+              fontFamily: 'Signatra',
+            ),
             home: const Scaffold(
               body: Center(
                 child: Text(

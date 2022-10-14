@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import '../forget_password/forget_password.dart';
 import '../services/global_methods.dart';
 import '../services/global_variables.dart';
-import '../services/layout.dart';
-import '../services/text_style.dart';
 import '../sign_up/sign_up.dart';
+import '../styles/clr.dart';
+import '../styles/layout.dart';
+import '../styles/txt.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -20,10 +21,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   late AnimationController _animationController;
 
   final _loginFormKey = GlobalKey<FormState>();
-  final FocusNode _passFocusNode = FocusNode();
-  final TextEditingController _emailTextController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
+  final FocusNode _passwordFocusNode = FocusNode();
 
   bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -54,9 +56,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
-    _emailTextController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
-    _passFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -69,11 +71,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           Container(
             color: Colors.black54,
             child: Padding(
-              padding: const EdgeInsets.all(Layout.appPadding),
+              padding: const EdgeInsets.all(layout.appPadding),
               child: ListView(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(Layout.appPadding * 2),
+                    padding: const EdgeInsets.all(layout.appPadding * 2),
                     child: _loginBanner(),
                   ),
                   Form(
@@ -81,19 +83,19 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _emailFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding / 2),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding / 2),
                           child: _passwordFormField(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _forgetPasswordText(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: Layout.appPadding),
+                          padding: const EdgeInsets.only(bottom: layout.appPadding),
                           child: _loginButton(),
                         ),
                         _signUpTextButton(),
@@ -130,7 +132,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   Widget _loginBanner() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(Layout.appRadius * 2),
+      borderRadius: BorderRadius.circular(layout.appRadius * 2),
       child: Image.asset(
         'assets/images/jobs.png',
         fit: BoxFit.cover,
@@ -141,9 +143,9 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   Widget _emailFormField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
-      onEditingComplete: () => FocusScope.of(context).requestFocus(_passFocusNode),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_passwordFocusNode),
       keyboardType: TextInputType.emailAddress,
-      controller: _emailTextController,
+      controller: _emailController,
       validator: (value) {
         if (value!.isEmpty || !value.contains('@')) {
           return 'Please enter a valid email address';
@@ -151,19 +153,19 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: const InputDecoration(
         hintText: 'Enter your email address',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color:  Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -172,7 +174,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   Widget _passwordFormField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
-      onEditingComplete: () => FocusScope.of(context).requestFocus(_passFocusNode),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_passwordFocusNode),
       keyboardType: TextInputType.visiblePassword,
       controller: _passwordController,
       obscureText: !_obscureText,
@@ -183,7 +185,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: Style.textFormField,
+      style: txt.formFieldLight,
       decoration: InputDecoration(
         suffixIcon: GestureDetector(
           onTap: () {
@@ -193,20 +195,20 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           },
           child: Icon(
             _obscureText ? Icons.visibility : Icons.visibility_off,
-            color:  Style.defaultColor,
+            color: clr.light,
           ),
         ),
         hintText: 'Password',
-        hintStyle: Style.textFormFieldHint,
-        errorStyle: Style.textError,
+        hintStyle: txt.formFieldHintLight,
+        errorStyle: txt.error,
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Style.defaultColor),
+          borderSide: BorderSide(color: clr.light),
         ),
         errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color:Style.errorColor),
+          borderSide: BorderSide(color: clr.error),
         ),
       ),
     );
@@ -221,7 +223,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
         },
         child: const Text(
           'Forget Password?',
-          style: Style.textButtonSmall,
+          style: txt.smallTextButton,
         ),
       ),
     );
@@ -230,19 +232,19 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   Widget _loginButton() {
     return MaterialButton(
       onPressed: _submitFormLogin,
-      color: Style.primaryColor,
-      elevation: Layout.appElevation,
+      color: clr.primary,
+      elevation: layout.appElevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Layout.appRadius),
+        borderRadius: BorderRadius.circular(layout.appRadius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Padding(
-            padding: EdgeInsets.all(Layout.appPadding),
+            padding: EdgeInsets.all(layout.appPadding),
             child: Text(
               'Login',
-              style: Style.button,
+              style: txt.button,
             ),
           ),
         ],
@@ -257,7 +259,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           children: [
             const TextSpan(
               text: 'Don\'t have an account?',
-              style: Style.textDefault,
+              style: txt.bodyDefaultLight,
             ),
             const TextSpan(text: '     '),
             TextSpan(
@@ -269,7 +271,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       ),
                     ),
               text: 'Sign up',
-              style: Style.textButtonLarge,
+              style: txt.mediumTextButton,
             ),
           ],
         ),
@@ -285,7 +287,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       });
       try {
         await _auth.signInWithEmailAndPassword(
-          email: _emailTextController.text.trim().toLowerCase(),
+          email: _emailController.text.trim().toLowerCase(),
           password: _passwordController.text.trim(),
         );
         Navigator.canPop(context) ? Navigator.pop(context) : null;

@@ -1,14 +1,155 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../services/global_variables.dart';
+import '../styles/clr.dart';
+import '../styles/layout.dart';
+import '../styles/txt.dart';
+
 class ForgetPassword extends StatefulWidget {
-  
   @override
   State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
+class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStateMixin {
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear,
+    )
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((animationStatus) {
+        if (animationStatus == AnimationStatus.completed) {
+          _animationController.reset();
+          _animationController.forward();
+        }
+      });
+    _animationController.forward();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Stack(
+        children: [
+          _forgetPasswordAnimation(),
+          Container(
+            color: Colors.black54,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: layout.appPadding),
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: layout.appPadding * 2),
+                    child: _titleText(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: layout.appPadding),
+                    child: _subTitleText(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: layout.appPadding * 3),
+                    child: _emailTextField(),
+                  ),
+                  _resetPasswordButton(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+  Widget _forgetPasswordAnimation() {
+    return CachedNetworkImage(
+      placeholder: (context, url) => Image.asset(
+        'assets/images/wallpaper.jpg',
+        fit: BoxFit.fill,
+      ),
+      imageUrl: forgetPasswordUrlImage,
+      height: double.infinity,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      alignment: FractionalOffset(_animation.value, 0),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+  }
+
+  Widget _titleText() {
+    return const Text(
+      'Reset Password',
+      style: txt.titleLight,
+    );
+  }
+
+  Widget _subTitleText() {
+    return const Text(
+      'Email address',
+      style: txt.subTitleLight,
+    );
+  }
+
+  Widget _emailTextField() {
+    return TextField(
+      keyboardType: TextInputType.emailAddress,
+      style: txt.bodyDefaultLight,
+      controller: _emailController,
+      decoration: const InputDecoration(
+        hintText: 'Enter your email address',
+        hintStyle: txt.bodyDefaultLight,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.passive,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _resetPasswordButton() {
+    return MaterialButton(
+      onPressed: _resetPasswordSubmit,
+      color: clr.primary,
+      elevation: layout.appElevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(layout.appRadius),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.all(layout.appPadding),
+        child: Text(
+          'Reset Password',
+          style: txt.button,
+        ),
+      ),
+    );
+  }
+
+	void _resetPasswordSubmit() {
+		
+	}
 }
