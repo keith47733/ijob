@@ -11,7 +11,7 @@ class txt {
   static const _textSizeLarge = 40.0 * _textScaleFactor;
 
   static const String _fontBody = 'Yeseva';
-	static const String _fontTitle = 'JosefinSans';
+  static const String _fontTitle = 'JosefinSans';
 
   static const appBarTitle = TextStyle(
     fontFamily: _fontTitle,
@@ -48,11 +48,25 @@ class txt {
     color: clr.light,
   );
 
-  static const dialog = TextStyle(
+  static const dialogTitle = TextStyle(
+    fontFamily: _fontTitle,
+    fontWeight: FontWeight.bold,
+    fontSize: _textSizeMedium,
+    color: clr.dark,
+  );
+
+  static const dialogBody = TextStyle(
     fontFamily: _fontBody,
     fontWeight: FontWeight.normal,
     fontSize: _textSizeDefault,
     color: clr.dark,
+  );
+
+  static const dialogOptions = TextStyle(
+    fontFamily: _fontBody,
+    fontWeight: FontWeight.bold,
+    fontSize: _textSizeDefault,
+    color: clr.secondary,
   );
 
   static final formFieldHint = TextStyle(

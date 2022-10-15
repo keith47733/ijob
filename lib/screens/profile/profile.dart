@@ -1,27 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../styles/clr.dart';
 import '../../styles/layout.dart';
 import '../../styles/txt.dart';
-import '../../widgets/main_app_bar.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/box_decoration_gradient.dart';
+import '../../widgets/main_app_bar.dart';
 
-class Jobs extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  State<Jobs> createState() => _JobsState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _JobsState extends State<Jobs> {
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecorationGradient(),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: MainAppBar('Jobs'),
-        bottomNavigationBar: BottomNavBar(navIndex: 0),
+        appBar: MainAppBar('Profile'),
+        bottomNavigationBar: BottomNavBar(navIndex: 3),
       ),
     );
   }

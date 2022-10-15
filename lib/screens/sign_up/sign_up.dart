@@ -59,7 +59,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             Container(
               color: Colors.black54,
               child: Padding(
-                padding: const EdgeInsets.all(layout.appPadding * 1.5),
+                padding: const EdgeInsets.all(layout.padding * 1.5),
                 child: ListView(
                   children: [
                     _signUpAvatar(),
@@ -68,29 +68,29 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _nameFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _emailFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _passwordFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _phoneFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding * 2),
+                            padding: const EdgeInsets.only(bottom: layout.padding * 2),
                             child: _addressFormField(),
                           ),
                           _isLoading
                               ? _progressIndicator()
                               : Padding(
-                                  padding: const EdgeInsets.all(layout.appPadding),
+                                  padding: const EdgeInsets.all(layout.padding),
                                   child: _signUpButton(),
                                 ),
                           _haveAccount(),
@@ -393,7 +393,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 child: Row(
                   children: const [
                     Padding(
-                      padding: EdgeInsets.all(layout.appPadding / 2),
+                      padding: EdgeInsets.all(layout.padding / 2),
                       child: Icon(
                         Icons.camera,
                         color: clr.primary,
@@ -401,7 +401,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     ),
                     Text(
                       '  Camera',
-                      style: txt.dialog,
+                      style: txt.dialogBody,
                     ),
                   ],
                 ),
@@ -413,7 +413,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                 child: Row(
                   children: const [
                     Padding(
-                      padding: EdgeInsets.all(layout.appPadding / 2),
+                      padding: EdgeInsets.all(layout.padding / 2),
                       child: Icon(
                         Icons.image,
                         color: clr.primary,
@@ -421,7 +421,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     ),
                     Text(
                       '  Gallery',
-                      style: txt.dialog,
+                      style: txt.dialogBody,
                     ),
                   ],
                 ),
@@ -454,7 +454,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     const cameraIconSpacing = 20.0;
 
     return Padding(
-      padding: const EdgeInsets.all(layout.appPadding * 2),
+      padding: const EdgeInsets.all(layout.padding * 2),
       child: Align(
         alignment: Alignment.center,
         child: GestureDetector(
@@ -468,10 +468,10 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                 color: clr.lightPrimary.withOpacity(0.3),
                 border: Border.all(width: 2, color: clr.passive),
-                borderRadius: BorderRadius.circular(layout.appRadius * 2),
+                borderRadius: BorderRadius.circular(layout.radius * 2),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(layout.appRadius * 2),
+                borderRadius: BorderRadius.circular(layout.radius * 2),
                 child: imageFile == null
                     ? Stack(
                         children: [
@@ -511,16 +511,16 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   Widget _signUpButton() {
     return MaterialButton(
       onPressed: _submitSignUpForm,
-      elevation: layout.appElevation,
+      elevation: layout.elevation,
       color: clr.primary,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(layout.appRadius),
+        borderRadius: BorderRadius.circular(layout.radius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Padding(
-            padding: EdgeInsets.all(layout.appPadding * 0.75),
+            padding: EdgeInsets.all(layout.padding * 0.75),
             child: Text(
               'Sign up',
               style: txt.button,

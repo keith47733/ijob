@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../styles/clr.dart';
 import '../styles/layout.dart';
+import "../styles/txt.dart";
 
 class GlobalMethod {
-  static void showErrorDialog({required BuildContext context, required String error}) {
+    static void showErrorDialog({required BuildContext context, required String error}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -11,7 +13,7 @@ class GlobalMethod {
           title: Row(
             children: const [
               Padding(
-                padding: EdgeInsets.all(layout.appPadding),
+                padding: EdgeInsets.all(layout.padding),
                 child: Icon(
                   Icons.warning_amber_outlined,
                   color: Colors.grey,

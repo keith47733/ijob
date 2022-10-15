@@ -57,7 +57,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          title: Text(
             'Reset Password',
             style: txt.appBarTitle,
           ),
@@ -68,22 +68,22 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
             Container(
               color: Colors.black54,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: layout.appPadding * 1.5),
+                padding: const EdgeInsets.symmetric(horizontal: layout.padding * 1.5),
                 child: ListView(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                        top: layout.appPadding * 2,
-                        bottom: layout.appPadding,
+                        top: layout.padding * 2,
+                        bottom: layout.padding,
                       ),
                       child: _instructions(),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: layout.appPadding * 3),
+                      padding: const EdgeInsets.only(bottom: layout.padding * 3),
                       child: _emailTextField(),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: layout.appPadding),
+                      padding: const EdgeInsets.symmetric(horizontal: layout.padding),
                       child: _resetPasswordButton(),
                     ),
                   ],
@@ -144,12 +144,12 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
     return MaterialButton(
       onPressed: _resetPasswordSubmit,
       color: clr.primary,
-      elevation: layout.appElevation,
+      elevation: layout.elevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(layout.appRadius),
+        borderRadius: BorderRadius.circular(layout.radius),
       ),
       child: const Padding(
-        padding: EdgeInsets.all(layout.appPadding * 0.75),
+        padding: EdgeInsets.all(layout.padding * 0.75),
         child: Text(
           'Reset Password',
           style: txt.button,

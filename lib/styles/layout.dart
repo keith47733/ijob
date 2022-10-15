@@ -1,5 +1,7 @@
 class layout {
-  static const appPadding = 16.0;
-  static const appRadius = 16.0;
-  static const appElevation = 8.0;
+  static const padding = 16.0;
+  static const radius = 16.0;
+  static const elevation = 10.0;
+	static const bottomNavBarIconSize = 30.0;
+	static const curvedNavBarHeight = 50.0;
 }

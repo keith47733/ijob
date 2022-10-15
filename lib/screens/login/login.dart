@@ -41,11 +41,11 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             Container(
               color: Colors.black54,
               child: Padding(
-                padding: const EdgeInsets.all(layout.appPadding * 1.5),
+                padding: const EdgeInsets.all(layout.padding * 1.5),
                 child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(layout.appPadding * 3),
+                      padding: const EdgeInsets.all(layout.padding * 3),
                       child: _loginBanner(),
                     ),
                     Form(
@@ -53,22 +53,22 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _emailFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding / 2),
+                            padding: const EdgeInsets.only(bottom: layout.padding / 2),
                             child: _passwordFormField(),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: layout.appPadding),
+                            padding: const EdgeInsets.only(bottom: layout.padding),
                             child: _forgetPasswordText(),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                              left: layout.appPadding,
-                              right: layout.appPadding,
-                              bottom: layout.appPadding,
+                              left: layout.padding,
+                              right: layout.padding,
+                              bottom: layout.padding,
                             ),
                             child: _loginButton(),
                           ),
@@ -186,7 +186,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   Widget _loginBanner() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(layout.appRadius * 3),
+      borderRadius: BorderRadius.circular(layout.radius * 3),
       child: Opacity(
         opacity: 0.7,
         child: Image.asset(
@@ -201,15 +201,15 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     return MaterialButton(
       onPressed: _submitFormLogin,
       color: clr.primary,
-      elevation: layout.appElevation,
+      elevation: layout.elevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(layout.appRadius),
+        borderRadius: BorderRadius.circular(layout.radius),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Padding(
-            padding: EdgeInsets.all(layout.appPadding * 0.75),
+            padding: EdgeInsets.all(layout.padding * 0.75),
             child: Text(
               'Login',
               style: txt.button,
