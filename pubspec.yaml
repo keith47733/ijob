@@ -104,18 +104,6 @@ flutter:
   #         weight: 700
 
   fonts:
-  - family: InterTight
-    fonts:
-      - asset: assets/fonts/inter_tight/InterTight-Regular.ttf
-        weight: 300
-      - asset: assets/fonts/inter_tight/InterTight-Bold.ttf
-        weight: 600
-  - family: Oswald
-    fonts:
-      - asset: assets/fonts/oswald/Oswald-Regular.ttf
-        weight: 300
-      - asset: assets/fonts/oswald/Oswald-Bold.ttf
-        weight: 600         
   - family: SourceSansPro
     fonts:
       - asset: assets/fonts/source_sans_pro/SourceSansPro-Regular.ttf

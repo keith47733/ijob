@@ -6,55 +6,62 @@ class txt {
   static const _textScaleFactor = 1.1;
 
   static const _textSizeDefault = 18.0 * _textScaleFactor;
-  static const _textSizeSmall = 16.0 * _textScaleFactor;
-  static const _textSizeMedium = 18.0 * _textScaleFactor;
-  static const _textSizeLarge = 20.0 * _textScaleFactor;
+  static const _textSizeSmall = 14.0 * _textScaleFactor;
+  static const _textSizeMedium = 30.0 * _textScaleFactor;
+  static const _textSizeLarge = 40.0 * _textScaleFactor;
 
   static const String _fontNameDefault = 'SourceSansPro';
 
-  static const titleLight = TextStyle(
+  static const appBarTitle = TextStyle(
     fontFamily: _fontNameDefault,
-    fontWeight: FontWeight.bold,
-    fontSize: _textSizeLarge * 2,
+    fontWeight: FontWeight.normal,
+    fontSize: _textSizeDefault + 2,
     color: clr.light,
   );
 
-  static const subTitleLight = TextStyle(
+  static const title = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.bold,
-    fontSize: _textSizeMedium * 1.5,
+    fontSize: _textSizeLarge,
     color: clr.light,
   );
 
-  static const bodyDefaultLight = TextStyle(
+  static const subTitle = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontWeight: FontWeight.bold,
+    fontSize: _textSizeMedium,
+    color: clr.light,
+  );
+
+  static const body1 = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.normal,
     fontSize: _textSizeDefault,
     color: clr.light,
   );
 
-  static const bodyMediumLight = TextStyle(
+  static const body2 = TextStyle(
     fontFamily: _fontNameDefault,
-    fontWeight: FontWeight.bold,
-    fontSize: _textSizeLarge,
-    color: clr.primary,
+    fontWeight: FontWeight.normal,
+    fontSize: _textSizeMedium,
+    color: clr.light,
   );
 
-  static const dialogDark = TextStyle(
+  static const dialog = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.normal,
     fontSize: _textSizeDefault,
     color: clr.dark,
   );
 
-  static const formFieldHintLight = TextStyle(
+  static final formFieldHint = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.normal,
-    fontSize: _textSizeDefault,
-    color: clr.passive,
+    fontSize: _textSizeDefault - 3,
+    color: clr.passiveLight,
   );
 
-  static const formFieldLight = TextStyle(
+  static const formField = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.normal,
     fontSize: _textSizeDefault,
@@ -71,25 +78,21 @@ class txt {
   static const mediumTextButton = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.bold,
-    fontSize: _textSizeMedium,
+    fontSize: _textSizeDefault,
     color: clr.primary,
   );
 
   static const button = TextStyle(
     fontFamily: _fontNameDefault,
-    fontWeight: FontWeight.bold,
-    fontSize: _textSizeMedium + 2,
+    fontWeight: FontWeight.normal,
+    fontSize: _textSizeMedium * 0.75,
     color: clr.light,
   );
 
   static const error = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.normal,
-    fontSize: _textSizeMedium,
+    fontSize: _textSizeSmall,
     color: clr.error,
   );
-
-  static Color _hexToColor(String code) {
-    return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
-  }
 }

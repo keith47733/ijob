@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'login/login.dart';
 import 'styles/txt.dart';
+import 'user_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       builder: ((context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.black,
               primarySwatch: Colors.blue,
@@ -27,13 +28,14 @@ class MyApp extends StatelessWidget {
               body: Center(
                 child: Text(
                   'iJob is being initialized',
-                  style: txt.bodyMediumLight,
+                  style: txt.body2,
                 ),
               ),
             ),
           );
         } else if (snapshot.hasError) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.black,
               primarySwatch: Colors.blue,
@@ -54,12 +56,13 @@ class MyApp extends StatelessWidget {
           );
         } else {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'iJob',
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
               primarySwatch: Colors.blue,
             ),
-            home: Login(),
+            home: UserState(),
           );
         }
       }),

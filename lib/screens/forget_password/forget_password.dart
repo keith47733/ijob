@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-import '../services/global_variables.dart';
-import '../styles/clr.dart';
-import '../styles/layout.dart';
-import '../styles/txt.dart';
+import '../../services/global_variables.dart';
+import '../../styles/clr.dart';
+import '../../styles/layout.dart';
+import '../../styles/txt.dart';
+import '../login/login.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
   late AnimationController _animationController;
 
   final TextEditingController _emailController = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -48,34 +53,42 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _forgetPasswordAnimation(),
-          Container(
-            color: Colors.black54,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: layout.appPadding),
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: layout.appPadding * 2),
-                    child: _titleText(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: layout.appPadding),
-                    child: _subTitleText(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: layout.appPadding * 3),
-                    child: _emailTextField(),
-                  ),
-                  _resetPasswordButton(),
-                ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Reset Password',
+            style: txt.appBarTitle,
+          ),
+        ),
+        body: Stack(
+          children: [
+            _forgetPasswordAnimation(),
+            Container(
+              color: Colors.black54,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: layout.appPadding * 1.5),
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: layout.appPadding * 2),
+                      child: _instructions(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.appPadding * 3),
+                      child: _emailTextField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: layout.appPadding),
+                      child: _resetPasswordButton(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -95,36 +108,29 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
     );
   }
 
-  Widget _titleText() {
+  Widget _instructions() {
     return const Text(
-      'Reset Password',
-      style: txt.titleLight,
-    );
-  }
-
-  Widget _subTitleText() {
-    return const Text(
-      'Email address',
-      style: txt.subTitleLight,
+      'An email with instructions to reset your password will be sent to the email address provided below:',
+      style: txt.body1,
     );
   }
 
   Widget _emailTextField() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
-      style: txt.bodyDefaultLight,
+      style: txt.formField,
       controller: _emailController,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: 'Enter your email address',
-        hintStyle: txt.bodyDefaultLight,
-        enabledBorder: UnderlineInputBorder(
+        hintStyle: txt.formFieldHint,
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.passive,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
-            color: clr.light,
+            color: clr.primary,
           ),
         ),
       ),
@@ -140,7 +146,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
         borderRadius: BorderRadius.circular(layout.appRadius),
       ),
       child: const Padding(
-        padding: EdgeInsets.all(layout.appPadding),
+        padding: EdgeInsets.all(layout.appPadding * 0.75),
         child: Text(
           'Reset Password',
           style: txt.button,
@@ -149,7 +155,19 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
     );
   }
 
-	void _resetPasswordSubmit() {
-		
-	}
+  void _resetPasswordSubmit() async {
+    try {
+      await _auth.sendPasswordResetEmail(
+        email: _emailController.text.trim().toLowerCase(),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
+      );
+    } catch (error) {
+      Fluttertoast.showToast(msg: error.toString());
+    }
+  }
 }
