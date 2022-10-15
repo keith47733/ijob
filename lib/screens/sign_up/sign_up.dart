@@ -349,7 +349,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       },
       style: txt.formField,
       decoration: InputDecoration(
-        hintText: 'Enter you phone number',
+        hintText: 'Enter your phone number',
         hintStyle: txt.formFieldHint,
         errorStyle: txt.error,
         enabledBorder: const UnderlineInputBorder(

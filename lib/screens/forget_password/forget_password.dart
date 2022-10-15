@@ -72,7 +72,10 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
                 child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: layout.appPadding * 2),
+                      padding: const EdgeInsets.only(
+                        top: layout.appPadding * 2,
+                        bottom: layout.appPadding,
+                      ),
                       child: _instructions(),
                     ),
                     Padding(
@@ -111,7 +114,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
   Widget _instructions() {
     return const Text(
       'An email with instructions to reset your password will be sent to the email address provided below:',
-      style: txt.body1,
+      style: txt.body2,
     );
   }
 
