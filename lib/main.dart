@@ -26,10 +26,7 @@ class MyApp extends StatelessWidget {
             ),
             home: const Scaffold(
               body: Center(
-                child: Text(
-                  'iJob is being initialized',
-                  style: txt.body2Light,
-                ),
+                child: CircularProgressIndicator(color: Colors.blue),
               ),
             ),
           );
@@ -39,7 +36,6 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               scaffoldBackgroundColor: Colors.black,
               primarySwatch: Colors.blue,
-              fontFamily: 'Signatra',
             ),
             home: const Scaffold(
               body: Center(

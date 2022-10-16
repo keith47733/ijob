@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final FocusNode _emailFocusNode = FocusNode();
 
   final TextEditingController _passwordController = TextEditingController();
-  var _obscureText = false;
+  final _obscureText = false;
   final FocusNode _passwordFocusNode = FocusNode();
 
   final TextEditingController _phoneController = TextEditingController();
@@ -234,18 +234,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _emailFocusNode.requestFocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Name',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.labelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -278,18 +278,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _passwordFocusNode.requestFocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Email',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.labelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -322,18 +322,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _phoneFocusNode.requestFocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Password',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.labelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -366,18 +366,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _addressFocusNode.requestFocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Phone number',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.labelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -410,18 +410,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onEditingComplete: () => _addressFocusNode.unfocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Address',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.labelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -460,17 +460,23 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(layout.radius),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Padding(
-            padding: EdgeInsets.all(layout.padding * 0.75),
-            child: Text(
-              'Sign up',
+      child: Padding(
+        padding: const EdgeInsets.all(layout.padding * 0.75),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Text(
+              'Sign up   ',
               style: txt.button,
             ),
-          ),
-        ],
+            Icon(
+              Icons.person_add,
+              color: Colors.white,
+              size: layout.iconMedium,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -587,7 +593,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     ),
                     Text(
                       '  Camera',
-                      style: txt.dialogBody,
+                      style: txt.body2Dark,
                     ),
                   ],
                 ),
@@ -607,7 +613,7 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     ),
                     Text(
                       '  Gallery',
-                      style: txt.dialogBody,
+                      style: txt.body2Dark,
                     ),
                   ],
                 ),

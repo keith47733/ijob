@@ -9,15 +9,17 @@ class clr {
 
   static const Color light = Colors.white;
   static const Color passive = Colors.grey;
-  static final Color passiveLight = _lighten(passive, 40);
-  static const Color dark = Colors.black;
+  static final Color passiveLight = _lighten(passive, 60);
+  static const Color dark = Color.fromARGB(255, 11, 74, 103);
 
   static final Color backgroundGradient1 = _lighten(lightPrimary, 75);
   static final Color backgroundGradient2 = _lighten(lightPrimary, 90);
 
-  static final Color card = _lighten(Colors.yellow, 80);
+  static const Color bottomNavBarIcon = Colors.black;
 
-  static const Color error = Colors.red;
+  static final Color card = _lighten(Colors.yellow, 85);
+
+  static final Color error = _darken( Colors.red, 20);
 }
 
 Color _hexToColor(String code) {

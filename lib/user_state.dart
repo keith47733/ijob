@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/login/login.dart';
-import 'screens/jobs/jobs.dart';
+import 'screens/user/login.dart';
+import 'screens/jobs/list.dart';
 
 class UserState extends StatelessWidget {
   @override
@@ -15,7 +15,7 @@ class UserState extends StatelessWidget {
           return Login();
         } else if (userSnapshot.hasData) {
           print('User is already logged in.');
-          return Jobs();
+          return List();
         } else if (userSnapshot.hasError) {
           return const Scaffold(
             body: Center(
@@ -32,9 +32,11 @@ class UserState extends StatelessWidget {
           );
         }
         return const Scaffold(
+          backgroundColor: Colors.white,
           body: Center(
             child: Text(
               'FATAL ERROR',
+              style: TextStyle(color: Colors.red, fontSize: 30),
             ),
           ),
         );

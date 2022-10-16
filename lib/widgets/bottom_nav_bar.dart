@@ -2,10 +2,10 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/jobs/jobs.dart';
-import '../screens/profile/profile.dart';
-import '../screens/search_jobs/search_jobs.dart';
-import '../screens/upload_job/upload_job.dart';
+import '../screens/jobs/list.dart';
+import '../screens/jobs/profile.dart';
+import '../screens/jobs/search.dart';
+import '../screens/jobs/upload.dart';
 import '../styles/clr.dart';
 import '../styles/layout.dart';
 import "../styles/txt.dart";
@@ -24,23 +24,23 @@ class BottomNavBar extends StatelessWidget {
       height: layout.curvedNavBarHeight,
       index: navIndex,
       items: const [
-        Icon(Icons.list, size: layout.bottomNavBarIconSize, color: clr.dark),
-        Icon(Icons.search, size: layout.bottomNavBarIconSize, color: clr.dark),
-        Icon(Icons.add, size: layout.bottomNavBarIconSize, color: clr.dark),
-        Icon(Icons.person, size: layout.bottomNavBarIconSize, color: clr.dark),
-        Icon(Icons.exit_to_app, size: layout.bottomNavBarIconSize, color: clr.dark),
+        Icon(Icons.list, size: layout.iconMedium, color: clr.bottomNavBarIcon),
+        Icon(Icons.search, size: layout.iconMedium, color: clr.bottomNavBarIcon),
+        Icon(Icons.add, size: layout.iconMedium, color: clr.bottomNavBarIcon),
+        Icon(Icons.person, size: layout.iconMedium, color: clr.bottomNavBarIcon),
+        Icon(Icons.exit_to_app, size: layout.iconMedium, color: clr.bottomNavBarIcon),
       ],
       // animationDuration: const Duration(milliseconds: 300),
       // animationCurve: Curves.bounceInOut,
       onTap: (navIndex) {
         if (navIndex == 0) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Jobs()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => List()));
         }
         if (navIndex == 1) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SearchJobs()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Search()));
         }
         if (navIndex == 2) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UploadJob()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Upload()));
         }
         if (navIndex == 3) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Profile()));
@@ -52,8 +52,8 @@ class BottomNavBar extends StatelessWidget {
     );
   }
 
-  _logout(context) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
+  _logout(context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     showDialog(
       context: context,
       builder: (context) {
@@ -69,27 +69,26 @@ class BottomNavBar extends StatelessWidget {
                 padding: EdgeInsets.all(layout.padding / 2),
                 child: Icon(
                   Icons.logout,
-                  size: layout.dialogIconSize,
+                  size: layout.iconLarge,
                   color: clr.dark,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.all(layout.padding),
                 child: Text(
-                  'Sign Out',
-                  style: txt.dialogTitle,
+                  'Log Out',
+                  style: txt.titleDark,
                 ),
               ),
             ],
           ),
           content: const Text(
             'Are you sure you want to logout?',
-            style: txt.dialogBody,
+            style: txt.body2Dark,
           ),
           actions: [
             TextButton(
               onPressed: () {
-								// navIndex = 1;
                 Navigator.canPop(context) ? Navigator.pop(context) : null;
               },
               child: const Text(

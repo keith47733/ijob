@@ -7,7 +7,7 @@ import '../../services/global_variables.dart';
 import '../../styles/clr.dart';
 import '../../styles/layout.dart';
 import '../../styles/txt.dart';
-import '../login/login.dart';
+import 'login.dart';
 
 class ForgetPassword extends StatefulWidget {
   @override

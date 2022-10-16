@@ -8,8 +8,8 @@ import '../../services/global_variables.dart';
 import '../../styles/clr.dart';
 import '../../styles/layout.dart';
 import '../../styles/txt.dart';
-import '../forget_password/forget_password.dart';
-import '../sign_up/sign_up.dart';
+import 'forget_password.dart';
+import 'sign_up.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -133,18 +133,18 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _passwordFocusNode.requestFocus(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Email address',
         labelStyle: txt.labelLight,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         floatingLabelStyle: txt.floatingLabelLight,
         errorStyle: txt.error,
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.light,
           ),
@@ -205,7 +205,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
             color: clr.light,
           ),
         ),
-        errorBorder: const UnderlineInputBorder(
+        errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.error,
           ),
@@ -276,17 +276,23 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(layout.radius),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Padding(
-            padding: EdgeInsets.all(layout.padding * 0.75),
-            child: Text(
-              'Login',
+      child: Padding(
+        padding: const EdgeInsets.all(layout.padding * 0.75),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Text(
+              'Login   ',
               style: txt.button,
             ),
-          ),
-        ],
+            Icon(
+              Icons.login,
+              color: Colors.white,
+              size: layout.iconMedium,
+            )
+          ],
+        ),
       ),
     );
   }

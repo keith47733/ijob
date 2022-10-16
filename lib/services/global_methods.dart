@@ -7,13 +7,13 @@ import "../styles/txt.dart";
 class GlobalMethod {
   static void showErrorDialog({
     required BuildContext context,
-		required IconData icon,
-		required Color iconColor,
+    required IconData icon,
+    required Color iconColor,
     required String title,
-		required String body,
-		required String buttonText,
+    required String body,
+    required String buttonText,
   }) {
-		showDialog(
+    showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -28,22 +28,24 @@ class GlobalMethod {
                 padding: const EdgeInsets.all(layout.padding / 2),
                 child: Icon(
                   icon,
-                  size: layout.dialogIconSize,
+                  size: layout.iconLarge,
                   color: iconColor,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(layout.padding),
-                child: Text(
-                  title,
-                  style: txt.dialogTitle,
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(layout.padding),
+                  child: Text(
+                    title,
+                    style: txt.titleDark,
+                  ),
                 ),
               ),
             ],
           ),
           content: Text(
             body,
-            style: txt.dialogBody,
+            style: txt.body2Dark,
           ),
           actions: [
             TextButton(
@@ -59,47 +61,47 @@ class GlobalMethod {
         );
       },
     );
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Row(
-  //           children: const [
-  //             Padding(
-  //               padding: EdgeInsets.all(layout.padding),
-  //               child: Icon(
-  //                 Icons.warning_amber_outlined,
-  //                 color: Colors.grey,
-  //                 size: 55,
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.all(8.0),
-  //               child: Text('Error occured'),
-  //             ),
-  //           ],
-  //         ),
-  //         content: Text(
-  //           error,
-  //           style: const TextStyle(
-  //             color: Colors.black,
-  //             fontSize: 20,
-  //             fontStyle: FontStyle.italic,
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.canPop(context) ? Navigator.pop(context) : null;
-  //             },
-  //             child: const Text(
-  //               'OK',
-  //               style: TextStyle(color: Colors.red),
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         title: Row(
+    //           children: const [
+    //             Padding(
+    //               padding: EdgeInsets.all(layout.padding),
+    //               child: Icon(
+    //                 Icons.warning_amber_outlined,
+    //                 color: Colors.grey,
+    //                 size: 55,
+    //               ),
+    //             ),
+    //             Padding(
+    //               padding: EdgeInsets.all(8.0),
+    //               child: Text('Error occured'),
+    //             ),
+    //           ],
+    //         ),
+    //         content: Text(
+    //           error,
+    //           style: const TextStyle(
+    //             color: Colors.black,
+    //             fontSize: 20,
+    //             fontStyle: FontStyle.italic,
+    //           ),
+    //         ),
+    //         actions: [
+    //           TextButton(
+    //             onPressed: () {
+    //               Navigator.canPop(context) ? Navigator.pop(context) : null;
+    //             },
+    //             child: const Text(
+    //               'OK',
+    //               style: TextStyle(color: Colors.red),
+    //             ),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
   }
 }
