@@ -29,24 +29,64 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   File? imageFile;
 
   final TextEditingController _nameController = TextEditingController();
-  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _nameFocusNode = FocusNode();
 
   final TextEditingController _emailController = TextEditingController();
-  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
 
   final TextEditingController _passwordController = TextEditingController();
   var _obscureText = false;
-  final FocusNode _phoneFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   final TextEditingController _phoneController = TextEditingController();
-  final FocusNode _addressFocusNode = FocusNode();
+  final FocusNode _phoneFocusNode = FocusNode();
 
   final TextEditingController _addressController = TextEditingController();
+  final FocusNode _addressFocusNode = FocusNode();
 
   bool _isLoading = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String? imageUrl;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 20),
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.linear,
+    )
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((animationStatus) {
+        if (animationStatus == AnimationStatus.completed) {
+          _animationController.reset();
+          _animationController.forward();
+        }
+      });
+    _animationController.forward();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _phoneFocusNode.dispose();
+    _addressFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,332 +144,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           ], // Stack items
         ),
       ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    _phoneFocusNode.dispose();
-    _addressFocusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 20),
-    );
-    _animation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.linear,
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((animationStatus) {
-        if (animationStatus == AnimationStatus.completed) {
-          _animationController.reset();
-          _animationController.forward();
-        }
-      });
-    _animationController.forward();
-    super.initState();
-  }
-
-  Widget _addressFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.done,
-      onEditingComplete: () => _addressFocusNode.unfocus(),
-      keyboardType: TextInputType.text,
-      controller: _addressController,
-      focusNode: _addressFocusNode,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a valid address';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        hintText: 'Enter your name/company address',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
-  void _cropImage(filePath) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(
-      sourcePath: filePath,
-      maxHeight: 1080,
-      maxWidth: 1080,
-    );
-    if (croppedImage != null) {
-      setState(
-        () {
-          imageFile = File(croppedImage.path);
-        },
-      );
-    }
-  }
-
-  Widget _emailFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      onEditingComplete: () => _passwordFocusNode.requestFocus(),
-      keyboardType: TextInputType.emailAddress,
-      controller: _emailController,
-      focusNode: _emailFocusNode,
-      validator: (value) {
-        if (value!.isEmpty || !value.contains('@')) {
-          return 'Please enter a valid email address';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        hintText: 'Enter your email address',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
-  void _getFromCamera() async {
-    XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    _cropImage(pickedFile!.path);
-    Navigator.pop(context);
-  }
-
-  void _getFromGallery() async {
-    XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    _cropImage(pickedFile!.path);
-    Navigator.pop(context);
-  }
-
-  Widget _haveAccount() {
-    return Center(
-      child: RichText(
-        text: TextSpan(
-          children: [
-            const TextSpan(
-              text: 'Already have an account?',
-              style: txt.body1,
-            ),
-            const TextSpan(text: '     '),
-            TextSpan(
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
-              text: 'Login',
-              style: txt.mediumTextButton,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _nameFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      onEditingComplete: () => _emailFocusNode.requestFocus(),
-      keyboardType: TextInputType.name,
-      controller: _nameController,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a valid name or company';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        hintText: 'Enter your name/company',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
-  Widget _passwordFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      onEditingComplete: () => _phoneFocusNode.requestFocus(),
-      keyboardType: TextInputType.visiblePassword,
-      controller: _passwordController,
-      focusNode: _passwordFocusNode,
-      obscureText: !_obscureText,
-      validator: (value) {
-        if (value!.isEmpty || value.length < 7) {
-          return 'Please enter a valid password (min 7 characters)';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        suffixIcon: GestureDetector(
-          onTap: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          child: Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
-            color: clr.light,
-          ),
-        ),
-        hintText: 'Enter a password',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
-  Widget _phoneFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.next,
-      onEditingComplete: () => _addressFocusNode.requestFocus(),
-      keyboardType: TextInputType.phone,
-      controller: _phoneController,
-      focusNode: _phoneFocusNode,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a valid phone nubmer';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        hintText: 'Enter your phone number',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
-  Widget _progressIndicator() {
-    return const Center(
-      child: SizedBox(
-        height: 70,
-        width: 70,
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  void _showImageDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text(
-            'Choose image source:',
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                onTap: () {
-                  _getFromCamera();
-                },
-                child: Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(layout.padding / 2),
-                      child: Icon(
-                        Icons.camera,
-                        color: clr.primary,
-                      ),
-                    ),
-                    Text(
-                      '  Camera',
-                      style: txt.dialogBody,
-                    ),
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  _getFromGallery();
-                },
-                child: Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(layout.padding / 2),
-                      child: Icon(
-                        Icons.image,
-                        color: clr.primary,
-                      ),
-                    ),
-                    Text(
-                      '  Gallery',
-                      style: txt.dialogBody,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 
@@ -508,6 +222,236 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     );
   }
 
+  Widget _nameFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _nameFocusNode,
+      autofocus: false,
+      controller: _nameController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () => _emailFocusNode.requestFocus(),
+      decoration: const InputDecoration(
+        labelText: 'Name',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.labelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter a valid name';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _emailFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _emailFocusNode,
+      autofocus: false,
+      controller: _emailController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () => _passwordFocusNode.requestFocus(),
+      decoration: const InputDecoration(
+        labelText: 'Email',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.labelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty || !value.contains('@')) {
+          return 'Please enter a valid name';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _passwordFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _passwordFocusNode,
+      autofocus: false,
+      controller: _passwordController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.visiblePassword,
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () => _phoneFocusNode.requestFocus(),
+      decoration: const InputDecoration(
+        labelText: 'Password',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.labelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty || value.length < 7) {
+          return 'Please enter a valid password (min 7 characters)';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _phoneFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _phoneFocusNode,
+      autofocus: false,
+      controller: _phoneController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      onEditingComplete: () => _addressFocusNode.requestFocus(),
+      decoration: const InputDecoration(
+        labelText: 'Phone number',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.labelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter a valid phone number';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _addressFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _addressFocusNode,
+      autofocus: false,
+      controller: _addressController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done,
+      onEditingComplete: () => _addressFocusNode.unfocus(),
+      decoration: const InputDecoration(
+        labelText: 'Address',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.labelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Please enter a valid address';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _progressIndicator() {
+    return const Center(
+      child: SizedBox(
+        height: 70,
+        width: 70,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
   Widget _signUpButton() {
     return MaterialButton(
       onPressed: _submitSignUpForm,
@@ -535,7 +479,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     final isValid = _signUpFormKey.currentState!.validate();
     if (isValid) {
       if (imageFile == null) {
-        GlobalMethod.showErrorDialog(context: context, error: 'Please provde a user image');
+        GlobalMethod.showErrorDialog(
+          context: context,
+          icon: Icons.error,
+          iconColor: clr.error,
+          title: 'Error',
+          body: 'Please provide a user image',
+          buttonText: 'OK',
+        );
         return;
       }
       setState(
@@ -571,7 +522,14 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
             _isLoading = false;
           },
         );
-        GlobalMethod.showErrorDialog(context: context, error: error.toString());
+        GlobalMethod.showErrorDialog(
+          context: context,
+          icon: Icons.error,
+          iconColor: clr.error,
+          title: 'Error',
+          body: error.toString(),
+          buttonText: 'OK',
+        );
       }
     }
     setState(
@@ -579,5 +537,112 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
         _isLoading = false;
       },
     );
+  }
+
+  Widget _haveAccount() {
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          children: [
+            const TextSpan(
+              text: 'Already have an account?',
+              style: txt.body2Light,
+            ),
+            const TextSpan(text: '     '),
+            TextSpan(
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
+              text: 'Login',
+              style: txt.mediumTextButton,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showImageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Choose image source:',
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: () {
+                  _getFromCamera();
+                },
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(layout.padding / 2),
+                      child: Icon(
+                        Icons.camera,
+                        color: clr.primary,
+                      ),
+                    ),
+                    Text(
+                      '  Camera',
+                      style: txt.dialogBody,
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  _getFromGallery();
+                },
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(layout.padding / 2),
+                      child: Icon(
+                        Icons.image,
+                        color: clr.primary,
+                      ),
+                    ),
+                    Text(
+                      '  Gallery',
+                      style: txt.dialogBody,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _getFromCamera() async {
+    XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    _cropImage(pickedFile!.path);
+    Navigator.pop(context);
+  }
+
+  void _getFromGallery() async {
+    XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    _cropImage(pickedFile!.path);
+    Navigator.pop(context);
+  }
+
+  void _cropImage(filePath) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+      sourcePath: filePath,
+      maxHeight: 1080,
+      maxWidth: 1080,
+    );
+    if (croppedImage != null) {
+      setState(
+        () {
+          imageFile = File(croppedImage.path);
+        },
+      );
+    }
   }
 }

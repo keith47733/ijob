@@ -1,4 +1,3 @@
-
 String loginUrlImage = 'https://images.unsplash.com/photo-1527511624584-388b58b9620c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80';
 
 // String loginUrlImage = 'https://w0.peakpx.com/wallpaper/49/536/HD-wallpaper-skyscrapers-black-and-white-monochrome-modern-buildings-business-centers.jpg';

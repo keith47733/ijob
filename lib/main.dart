@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
               body: Center(
                 child: Text(
                   'iJob is being initialized',
-                  style: txt.body2,
+                  style: txt.body2Light,
                 ),
               ),
             ),

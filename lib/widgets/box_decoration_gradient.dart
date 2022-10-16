@@ -13,7 +13,7 @@ BoxDecoration BoxDecorationGradient() {
       ],
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
-      stops: [0.2, 1.0],
+      stops: const [0.2, 1.0],
     ),
   );
 }

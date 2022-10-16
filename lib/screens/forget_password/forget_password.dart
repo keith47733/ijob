@@ -57,7 +57,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Reset Password',
             style: txt.appBarTitle,
           ),
@@ -114,24 +114,24 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
   Widget _instructions() {
     return const Text(
       'An email with instructions to reset your password will be sent to the email address provided below:',
-      style: txt.body2,
+      style: txt.body2Light,
     );
   }
 
   Widget _emailTextField() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
-      style: txt.formField,
+      style: txt.fieldLight,
       controller: _emailController,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: 'Enter your email address',
-        hintStyle: txt.formFieldHint,
-        enabledBorder: const UnderlineInputBorder(
+        hintStyle: txt.labelLight,
+        enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.passive,
           ),
         ),
-        focusedBorder: const UnderlineInputBorder(
+        focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
             color: clr.primary,
           ),

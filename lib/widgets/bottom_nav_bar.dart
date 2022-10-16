@@ -2,7 +2,6 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/global_methods.dart';
 import '../screens/jobs/jobs.dart';
 import '../screens/profile/profile.dart';
 import '../screens/search_jobs/search_jobs.dart';
@@ -31,8 +30,8 @@ class BottomNavBar extends StatelessWidget {
         Icon(Icons.person, size: layout.bottomNavBarIconSize, color: clr.dark),
         Icon(Icons.exit_to_app, size: layout.bottomNavBarIconSize, color: clr.dark),
       ],
-      animationDuration: const Duration(milliseconds: 300),
-      animationCurve: Curves.bounceInOut,
+      // animationDuration: const Duration(milliseconds: 300),
+      // animationCurve: Curves.bounceInOut,
       onTap: (navIndex) {
         if (navIndex == 0) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Jobs()));
@@ -53,9 +52,8 @@ class BottomNavBar extends StatelessWidget {
     );
   }
 
-_logout(context) async {
+  _logout(context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
-
     showDialog(
       context: context,
       builder: (context) {
@@ -71,7 +69,7 @@ _logout(context) async {
                 padding: EdgeInsets.all(layout.padding / 2),
                 child: Icon(
                   Icons.logout,
-                  size: 36,
+                  size: layout.dialogIconSize,
                   color: clr.dark,
                 ),
               ),
@@ -91,6 +89,7 @@ _logout(context) async {
           actions: [
             TextButton(
               onPressed: () {
+								// navIndex = 1;
                 Navigator.canPop(context) ? Navigator.pop(context) : null;
               },
               child: const Text(

@@ -12,8 +12,10 @@ class clr {
   static final Color passiveLight = _lighten(passive, 40);
   static const Color dark = Colors.black;
 
-  static final Color backgroundGradient1 = _lighten(lightPrimary, 65);
-  static final Color backgroundGradient2 = _lighten(lightPrimary, 85);
+  static final Color backgroundGradient1 = _lighten(lightPrimary, 75);
+  static final Color backgroundGradient2 = _lighten(lightPrimary, 90);
+
+  static final Color card = _lighten(Colors.yellow, 80);
 
   static const Color error = Colors.red;
 }

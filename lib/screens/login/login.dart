@@ -23,6 +23,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   final _loginFormKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
   final FocusNode _passwordFocusNode = FocusNode();
@@ -90,6 +92,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   void dispose() {
     _animationController.dispose();
     _emailController.dispose();
+    _emailFocusNode.dispose();
     _passwordController.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
@@ -120,11 +123,38 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
 
   Widget _emailFormField() {
     return TextFormField(
+      enabled: true,
+      focusNode: _emailFocusNode,
+      autofocus: false,
+      controller: _emailController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _passwordFocusNode.requestFocus(),
-      // onEditingComplete: () => FocusScope.of(context).requestFocus(_passwordFocusNode),
-      keyboardType: TextInputType.emailAddress,
-      controller: _emailController,
+      decoration: const InputDecoration(
+        labelText: 'Email address',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.floatingLabelLight,
+        errorStyle: txt.error,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
+        ),
+      ),
       validator: (value) {
         if (value!.isEmpty || !value.contains('@')) {
           return 'Please enter a valid email address';
@@ -132,21 +162,62 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           return null;
         }
       },
-      style: txt.formField,
+    );
+  }
+
+  Widget _passwordFormField() {
+    return TextFormField(
+      enabled: true,
+      focusNode: _passwordFocusNode,
+      autofocus: false,
+      controller: _passwordController,
+      style: txt.fieldLight,
+      // maxLines: 1,
+      // maxLength: 100,
+      keyboardType: TextInputType.visiblePassword,
+      textInputAction: TextInputAction.done,
+      onEditingComplete: () => _passwordFocusNode.unfocus(),
+      obscureText: !_obscureText,
       decoration: InputDecoration(
-        hintText: 'Enter your email address',
-        hintStyle: txt.formFieldHint,
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+          child: Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+            color: clr.light,
+          ),
+        ),
+        labelText: 'Password',
+        labelStyle: txt.labelLight,
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        floatingLabelStyle: txt.floatingLabelLight,
         errorStyle: txt.error,
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
+          borderSide: BorderSide(
+            color: clr.light,
+          ),
         ),
         errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
+          borderSide: BorderSide(
+            color: clr.error,
+          ),
         ),
       ),
+      validator: (value) {
+        if (value!.isEmpty || value.length < 7) {
+          return 'Please enter a valid password (min 7 characters)';
+        } else {
+          return null;
+        }
+      },
     );
   }
 
@@ -220,50 +291,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     );
   }
 
-  Widget _passwordFormField() {
-    return TextFormField(
-      textInputAction: TextInputAction.done,
-      onEditingComplete: () => _passwordFocusNode.unfocus(),
-      keyboardType: TextInputType.visiblePassword,
-      controller: _passwordController,
-      focusNode: _passwordFocusNode,
-      obscureText: !_obscureText,
-      validator: (value) {
-        if (value!.isEmpty || value.length < 7) {
-          return 'Please enter a valid password (min 7 characters)';
-        } else {
-          return null;
-        }
-      },
-      style: txt.formField,
-      decoration: InputDecoration(
-        suffixIcon: GestureDetector(
-          onTap: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
-          child: Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
-            color: clr.light,
-          ),
-        ),
-        hintText: 'Enter your password',
-        hintStyle: txt.formFieldHint,
-        errorStyle: txt.error,
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.light),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.primary),
-        ),
-        errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: clr.error),
-        ),
-      ),
-    );
-  }
-
   Widget _signUpTextButton() {
     return Center(
       child: RichText(
@@ -271,7 +298,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           children: [
             const TextSpan(
               text: 'Don\'t have an account?',
-              style: txt.body1,
+              style: txt.body2Light,
             ),
             const TextSpan(text: '     '),
             TextSpan(
@@ -310,9 +337,12 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           },
         );
         GlobalMethod.showErrorDialog(
-          context: context,
-          error: error.toString(),
-        );
+            context: context,
+            icon: Icons.error,
+            iconColor: clr.error,
+            title: 'Error',
+            body: error.toString(),
+            buttonText: 'OK');
       }
     }
     setState(() {
