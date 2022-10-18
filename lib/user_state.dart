@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/user/login.dart';
-import 'screens/jobs/list.dart';
+import 'screens/jobs/jobs.dart';
 
 class UserState extends StatelessWidget {
   @override
@@ -11,11 +11,9 @@ class UserState extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {
         if (userSnapshot.data == null) {
-          print('User is not logged in yet.');
           return Login();
         } else if (userSnapshot.hasData) {
-          print('User is already logged in.');
-          return List();
+          return Jobs();
         } else if (userSnapshot.hasError) {
           return const Scaffold(
             body: Center(

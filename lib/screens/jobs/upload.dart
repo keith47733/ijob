@@ -59,10 +59,14 @@ class _UploadState extends State<Upload> {
         decoration: BoxDecorationGradient(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: MainAppBar('Upload Job'),
           bottomNavigationBar: BottomNavBar(navIndex: 2),
           body: Padding(
-            padding: const EdgeInsets.all(layout.padding),
+            padding: const EdgeInsets.only(
+              top: layout.padding * 3,
+              bottom: layout.padding,
+							left: layout.padding,
+							right: layout.padding,
+            ),
             child: SingleChildScrollView(
               child: Card(
                 elevation: layout.elevation,
@@ -504,7 +508,6 @@ class _UploadState extends State<Upload> {
         backgroundColor: Colors.black54,
         fontSize: txt.textSizeDefault,
       );
-
       setState(() {
         _jobCategoryController.clear();
         _jobTitleController.clear();
@@ -528,4 +531,22 @@ class _UploadState extends State<Upload> {
       });
     }
   }
+
+	void getUserData() async {
+		final DocumentSnapshot userDoc = 
+		await FirebaseFirestore.instance.collection('users')
+		.doc(FirebaseAuth.instance.currentUser!.uid)
+		.get();
+		setState(() {
+		  userName = userDoc.get('name');
+			userImage = userDoc.get('user_image');
+			userLocation = userDoc.get('address');
+		});
+	}
+
+	@override
+	void initState() {
+		super.initState();
+		getUserData();
+	}
 }

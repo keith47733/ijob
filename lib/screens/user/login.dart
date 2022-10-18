@@ -47,7 +47,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(layout.padding * 3),
+                      padding: const EdgeInsets.all(layout.padding * 2),
                       child: _loginBanner(),
                     ),
                     Form(

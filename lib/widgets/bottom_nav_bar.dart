@@ -2,7 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/jobs/list.dart';
+import '../screens/jobs/jobs.dart';
+import '../screens/jobs/logout.dart';
 import '../screens/jobs/profile.dart';
 import '../screens/jobs/search.dart';
 import '../screens/jobs/upload.dart';
@@ -34,7 +35,7 @@ class BottomNavBar extends StatelessWidget {
       // animationCurve: Curves.bounceInOut,
       onTap: (navIndex) {
         if (navIndex == 0) {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => List()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Jobs()));
         }
         if (navIndex == 1) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Search()));
@@ -46,7 +47,8 @@ class BottomNavBar extends StatelessWidget {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Profile()));
         }
         if (navIndex == 4) {
-          _logout(context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Logout()));
+          // _logout(context);
         }
       },
     );
