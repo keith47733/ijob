@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
@@ -12,7 +11,6 @@ import '../../styles/layout.dart';
 import '../../styles/txt.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/box_decoration_gradient.dart';
-import '../../widgets/main_app_bar.dart';
 
 class Upload extends StatefulWidget {
   @override
@@ -56,7 +54,7 @@ class _UploadState extends State<Upload> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
-        decoration: BoxDecorationGradient(),
+        decoration: boxDecorationGradient(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           bottomNavigationBar: BottomNavBar(navIndex: 2),
@@ -64,8 +62,8 @@ class _UploadState extends State<Upload> {
             padding: const EdgeInsets.only(
               top: layout.padding * 3,
               bottom: layout.padding,
-							left: layout.padding,
-							right: layout.padding,
+              left: layout.padding,
+              right: layout.padding,
             ),
             child: SingleChildScrollView(
               child: Card(
@@ -73,50 +71,44 @@ class _UploadState extends State<Upload> {
                 color: clr.card,
                 child: Padding(
                   padding: const EdgeInsets.all(layout.padding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: layout.padding),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Job Description',
-                            style: txt.titleDark,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: layout.padding),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Job Description',
+                          style: txt.titleDark,
+                        ),
+                      ),
+                    ),
+                    Form(
+                      key: _uploadJobFormKey,
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        _jobCategoryFormField(),
+                        _jobTitleFormField(),
+                        _jobDescFormField(),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: layout.padding),
+                          child: _jobDeadlineFormField(),
+                        ),
+                      ]),
+                    ),
+                    _isLoading
+                        ? const Align(
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                              top: 0,
+                              bottom: layout.padding,
+                              left: layout.padding,
+                              right: layout.padding,
+                            ),
+                            child: _uploadJobButton(),
                           ),
-                        ),
-                      ),
-                      Form(
-                        key: _uploadJobFormKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _jobCategoryFormField(),
-                            _jobTitleFormField(),
-                            _jobDescFormField(),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: layout.padding),
-                              child: _jobDeadlineFormField(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      _isLoading
-                          ? const Align(
-                              alignment: Alignment.center,
-                              child: CircularProgressIndicator(),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.only(
-                                top: 0,
-                                bottom: layout.padding,
-                                left: layout.padding,
-                                right: layout.padding,
-                              ),
-                              child: _uploadJobButton(),
-                            ),
-                    ],
-                  ),
+                  ]),
                 ),
               ),
             ),
@@ -323,20 +315,19 @@ class _UploadState extends State<Upload> {
       child: Padding(
         padding: const EdgeInsets.all(layout.padding * 0.75),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Text(
-              'Upload Job   ',
-              style: txt.button,
-            ),
-            Icon(
-              Icons.upload_file,
-              color: Colors.white,
-              size: layout.iconMedium,
-            ),
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Text(
+                'Upload Job   ',
+                style: txt.button,
+              ),
+              Icon(
+                Icons.upload_file,
+                color: Colors.white,
+                size: layout.iconMedium,
+              ),
+            ]),
       ),
     );
   }
@@ -347,37 +338,36 @@ class _UploadState extends State<Upload> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.black54,
-          title: Padding(
-            padding: const EdgeInsets.only(
-              top: layout.padding,
-              bottom: layout.padding,
+            backgroundColor: Colors.black54,
+            title: Padding(
+              padding: const EdgeInsets.only(
+                top: layout.padding,
+                bottom: layout.padding,
+              ),
+              child: Text(
+                'Job Categories',
+                textAlign: TextAlign.center,
+                style: txt.titleLight.copyWith(color: clr.passiveLight),
+              ),
             ),
-            child: Text(
-              'Job Categories',
-              textAlign: TextAlign.center,
-              style: txt.titleLight.copyWith(color: clr.passiveLight),
-            ),
-          ),
-          content: SizedBox(
-            width: size.width * 0.9,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: jobCategories.length,
-              itemBuilder: ((context, index) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      _jobCategoryController.text = jobCategories[index];
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      bottom: index != jobCategories.length - 1 ? layout.padding : 0,
-                    ),
-                    child: Row(
-                      children: [
+            content: SizedBox(
+              width: size.width * 0.9,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: jobCategories.length,
+                itemBuilder: ((context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _jobCategoryController.text = jobCategories[index];
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: index != jobCategories.length - 1 ? layout.padding : 0,
+                      ),
+                      child: Row(children: [
                         Icon(
                           Icons.business,
                           color: clr.passiveLight,
@@ -394,17 +384,14 @@ class _UploadState extends State<Upload> {
                             ),
                           ),
                         ),
-                      ],
+                      ]),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+            actions: [
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 InkWell(
                   onTap: () {
                     _jobCategoryController.text = '';
@@ -415,25 +402,21 @@ class _UploadState extends State<Upload> {
                       right: layout.padding,
                       bottom: layout.padding * 2,
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.cancel,
-                          color: clr.passiveLight,
-                          size: layout.iconSmall,
-                        ),
-                        const Text(
-                          ' Cancel',
-                          style: txt.button,
-                        ),
-                      ],
-                    ),
+                    child: Row(children: [
+                      Icon(
+                        Icons.cancel,
+                        color: clr.passiveLight,
+                        size: layout.iconSmall,
+                      ),
+                      const Text(
+                        ' Cancel',
+                        style: txt.button,
+                      ),
+                    ]),
                   ),
                 ),
-              ],
-            ),
-          ],
-        );
+              ]),
+            ]);
       },
     );
   }
@@ -532,21 +515,19 @@ class _UploadState extends State<Upload> {
     }
   }
 
-	void getUserData() async {
-		final DocumentSnapshot userDoc = 
-		await FirebaseFirestore.instance.collection('users')
-		.doc(FirebaseAuth.instance.currentUser!.uid)
-		.get();
-		setState(() {
-		  userName = userDoc.get('name');
-			userImage = userDoc.get('user_image');
-			userLocation = userDoc.get('address');
-		});
-	}
+  void getUserData() async {
+    final DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    setState(() {
+      userName = userDoc.get('name');
+      userImage = userDoc.get('user_image');
+      userLocation = userDoc.get('address');
+    });
+  }
 
-	@override
-	void initState() {
-		super.initState();
-		getUserData();
-	}
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
 }

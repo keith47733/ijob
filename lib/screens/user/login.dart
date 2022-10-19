@@ -29,6 +29,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   bool _obscureText = true;
   final FocusNode _passwordFocusNode = FocusNode();
 
+  // ignore: unused_field
   bool _isLoading = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -37,53 +38,47 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: Stack(
-          children: [
-            _loginAnimation(),
-            Container(
-              color: Colors.black54,
-              child: Padding(
-                padding: const EdgeInsets.all(layout.padding * 1.5),
-                child: ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(layout.padding * 2),
-                      child: _loginBanner(),
-                    ),
-                    Form(
-                      key: _loginFormKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _emailFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding / 2),
-                            child: _passwordFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _forgetPasswordText(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: layout.padding,
-                              right: layout.padding,
-                              bottom: layout.padding,
-                            ),
-                            child: _loginButton(),
-                          ),
-                          _signUpTextButton(),
-                        ], // Form items
-                      ),
-                    ),
-                  ], // Listview items
+        body: Stack(children: [
+          _loginAnimation(),
+          Container(
+            color: Colors.black54,
+            child: Padding(
+              padding: const EdgeInsets.all(layout.padding * 1.5),
+              child: ListView(children: [
+                Padding(
+                  padding: const EdgeInsets.all(layout.padding * 2),
+                  child: _loginBanner(),
                 ),
-              ),
+                Form(
+                  key: _loginFormKey,
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _emailFormField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding / 2),
+                      child: _passwordFormField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _forgetPasswordText(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: layout.padding,
+                        right: layout.padding,
+                        bottom: layout.padding,
+                      ),
+                      child: _loginButton(),
+                    ),
+                    _signUpTextButton(),
+                  ]),
+                ),
+              ]),
             ),
-          ], // Stack items
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -111,12 +106,14 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       ..addListener(() {
         setState(() {});
       })
-      ..addStatusListener((animationStatus) {
-        if (animationStatus == AnimationStatus.completed) {
-          _animationController.reset();
-          _animationController.forward();
-        }
-      });
+      ..addStatusListener(
+        (animationStatus) {
+          if (animationStatus == AnimationStatus.completed) {
+            _animationController.reset();
+            _animationController.forward();
+          }
+        },
+      );
     _animationController.forward();
     super.initState();
   }
@@ -128,8 +125,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       autofocus: false,
       controller: _emailController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _passwordFocusNode.requestFocus(),
@@ -172,8 +167,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       autofocus: false,
       controller: _passwordController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.done,
       onEditingComplete: () => _passwordFocusNode.unfocus(),
@@ -279,20 +272,19 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       child: Padding(
         padding: const EdgeInsets.all(layout.padding * 0.75),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Text(
-              'Login   ',
-              style: txt.button,
-            ),
-            Icon(
-              Icons.login,
-              color: Colors.white,
-              size: layout.iconMedium,
-            )
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Text(
+                'Login   ',
+                style: txt.button,
+              ),
+              Icon(
+                Icons.login,
+                color: Colors.white,
+                size: layout.iconMedium,
+              )
+            ]),
       ),
     );
   }
@@ -300,26 +292,24 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   Widget _signUpTextButton() {
     return Center(
       child: RichText(
-        text: TextSpan(
-          children: [
-            const TextSpan(
-              text: 'Don\'t have an account?',
-              style: txt.body2Light,
-            ),
-            const TextSpan(text: '     '),
-            TextSpan(
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignUp(),
-                      ),
+        text: TextSpan(children: [
+          const TextSpan(
+            text: 'Don\'t have an account?',
+            style: txt.body2Light,
+          ),
+          const TextSpan(text: '     '),
+          TextSpan(
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUp(),
                     ),
-              text: 'Sign up',
-              style: txt.mediumTextButton,
-            ),
-          ],
-        ),
+                  ),
+            text: 'Sign up',
+            style: txt.mediumTextButton,
+          ),
+        ]),
       ),
     );
   }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../styles/clr.dart';
-import '../../styles/layout.dart';
-import '../../styles/txt.dart';
 
-BoxDecoration BoxDecorationGradient() {
+BoxDecoration boxDecorationGradient() {
   return BoxDecoration(
     gradient: LinearGradient(
       colors: [

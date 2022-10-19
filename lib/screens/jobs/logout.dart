@@ -20,19 +20,18 @@ class _LogoutState extends State<Logout> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecorationGradient(),
+      decoration: boxDecorationGradient(),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: MainAppBar('Logout'),
+        appBar: mainAppBar('Logout'),
         bottomNavigationBar: BottomNavBar(navIndex: 4),
         body: AlertDialog(
-          elevation: layout.elevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(layout.radius),
-          ),
-          backgroundColor: Colors.white,
-          title: Row(
-            children: const [
+            elevation: layout.elevation,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(layout.radius),
+            ),
+            backgroundColor: Colors.white,
+            title: Row(children: const [
               Padding(
                 padding: EdgeInsets.all(layout.padding / 2),
                 child: Icon(
@@ -48,98 +47,35 @@ class _LogoutState extends State<Logout> {
                   style: txt.titleDark,
                 ),
               ),
-            ],
-          ),
-          content: const Text(
-            'Are you sure you want to logout?',
-            style: txt.body2Dark,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.canPop(context) ? Navigator.pop(context) : null;
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Jobs()));
-              },
-              child: const Text(
-                'No',
-                style: txt.dialogOptions,
-              ),
+            ]),
+            content: const Text(
+              'Are you sure you want to logout?',
+              style: txt.body2Dark,
             ),
-            TextButton(
-              onPressed: () {
-                _auth.signOut();
-                Navigator.canPop(context) ? Navigator.pop(context) : null;
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserState()));
-              },
-              child: const Text(
-                'Yes',
-                style: txt.dialogOptions,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Jobs()));
+                },
+                child: const Text(
+                  'No',
+                  style: txt.dialogOptions,
+                ),
               ),
-            ),
-          ],
-        ),
+              TextButton(
+                onPressed: () {
+                  _auth.signOut();
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserState()));
+                },
+                child: const Text(
+                  'Yes',
+                  style: txt.dialogOptions,
+                ),
+              ),
+            ]),
       ),
     );
   }
-
-  // _logout(context) {
-  //   final FirebaseAuth _auth = FirebaseAuth.instance;
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         elevation: layout.elevation,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(layout.radius),
-  //         ),
-  //         backgroundColor: Colors.white,
-  //         title: Row(
-  //           children: const [
-  //             Padding(
-  //               padding: EdgeInsets.all(layout.padding / 2),
-  //               child: Icon(
-  //                 Icons.logout,
-  //                 size: layout.iconLarge,
-  //                 color: clr.dark,
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.all(layout.padding),
-  //               child: Text(
-  //                 'Log Out',
-  //                 style: txt.titleDark,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         content: const Text(
-  //           'Are you sure you want to logout?',
-  //           style: txt.body2Dark,
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.canPop(context) ? Navigator.pop(context) : null;
-  //             },
-  //             child: const Text(
-  //               'No',
-  //               style: txt.dialogOptions,
-  //             ),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               _auth.signOut();
-  //               Navigator.canPop(context) ? Navigator.pop(context) : null;
-  //               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserState()));
-  //             },
-  //             child: const Text(
-  //               'Yes',
-  //               style: txt.dialogOptions,
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }

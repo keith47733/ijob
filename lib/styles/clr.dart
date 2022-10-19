@@ -22,19 +22,18 @@ class clr {
   static final Color error = _darken( Colors.red, 20);
 }
 
+// ignore: unused_element
 Color _hexToColor(String code) {
   return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
 }
 
 Color _lighten(Color baseColor, int percent) {
-  // assert(1 <= percent && percent <= 100);
   var p = percent / 100;
   return Color.fromARGB(baseColor.alpha, baseColor.red + ((255 - baseColor.red) * p).round(),
       baseColor.green + ((255 - baseColor.green) * p).round(), baseColor.blue + ((255 - baseColor.blue) * p).round());
 }
 
 Color _darken(Color baseColor, int percent) {
-  // assert(1 <= percent && percent <= 100);
   var f = 1 - percent / 100;
   return Color.fromARGB(
       baseColor.alpha, (baseColor.red * f).round(), (baseColor.green * f).round(), (baseColor.blue * f).round());

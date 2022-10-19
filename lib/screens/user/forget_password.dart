@@ -165,9 +165,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with TickerProviderStat
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) => Login(),
-        ),
+        MaterialPageRoute(builder: (context) => Login()),
       );
     } catch (error) {
       Fluttertoast.showToast(msg: error.toString());

@@ -35,7 +35,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   final FocusNode _emailFocusNode = FocusNode();
 
   final TextEditingController _passwordController = TextEditingController();
-  final _obscureText = false;
   final FocusNode _passwordFocusNode = FocusNode();
 
   final TextEditingController _phoneController = TextEditingController();
@@ -93,56 +92,50 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: Stack(
-          children: [
-            _signUpAnimation(),
-            Container(
-              color: Colors.black54,
-              child: Padding(
-                padding: const EdgeInsets.all(layout.padding * 1.5),
-                child: ListView(
-                  children: [
-                    _signUpAvatar(),
-                    Form(
-                      key: _signUpFormKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _nameFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _emailFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _passwordFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding),
-                            child: _phoneFormField(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: layout.padding * 2),
-                            child: _addressFormField(),
-                          ),
-                          _isLoading
-                              ? _progressIndicator()
-                              : Padding(
-                                  padding: const EdgeInsets.all(layout.padding),
-                                  child: _signUpButton(),
-                                ),
-                          _haveAccount(),
-                        ], // Form items
-                      ),
+        body: Stack(children: [
+          _signUpAnimation(),
+          Container(
+            color: Colors.black54,
+            child: Padding(
+              padding: const EdgeInsets.all(layout.padding * 1.5),
+              child: ListView(children: [
+                _signUpAvatar(),
+                Form(
+                  key: _signUpFormKey,
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _nameFormField(),
                     ),
-                  ], // Listview items
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _emailFormField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _passwordFormField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding),
+                      child: _phoneFormField(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: layout.padding * 2),
+                      child: _addressFormField(),
+                    ),
+                    _isLoading
+                        ? _progressIndicator()
+                        : Padding(
+                            padding: const EdgeInsets.all(layout.padding),
+                            child: _signUpButton(),
+                          ),
+                    _haveAccount(),
+                  ]),
                 ),
-              ),
+              ]),
             ),
-          ], // Stack items
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -200,20 +193,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                           ),
                         ],
                       )
-                    : Stack(
-                        children: [
-                          Image.file(imageFile!, fit: BoxFit.fill),
-                          Positioned(
-                            bottom: cameraIconSpacing,
-                            right: cameraIconSpacing,
-                            child: Icon(
-                              Icons.camera_enhance_sharp,
-                              color: clr.light.withOpacity(0.6),
-                              size: cameraIconSize,
-                            ),
-                          )
-                        ],
-                      ),
+                    : Stack(children: [
+                        Image.file(imageFile!, fit: BoxFit.fill),
+                        Positioned(
+                          bottom: cameraIconSpacing,
+                          right: cameraIconSpacing,
+                          child: Icon(
+                            Icons.camera_enhance_sharp,
+                            color: clr.light.withOpacity(0.6),
+                            size: cameraIconSize,
+                          ),
+                        )
+                      ]),
               ),
             ),
           ),
@@ -229,8 +220,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       autofocus: false,
       controller: _nameController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _emailFocusNode.requestFocus(),
@@ -273,8 +262,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       autofocus: false,
       controller: _emailController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _passwordFocusNode.requestFocus(),
@@ -317,8 +304,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       autofocus: false,
       controller: _passwordController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _phoneFocusNode.requestFocus(),
@@ -361,8 +346,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       autofocus: false,
       controller: _phoneController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onEditingComplete: () => _addressFocusNode.requestFocus(),
@@ -405,8 +388,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       autofocus: false,
       controller: _addressController,
       style: txt.fieldLight,
-      // maxLines: 1,
-      // maxLength: 100,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onEditingComplete: () => _addressFocusNode.unfocus(),
@@ -463,20 +444,19 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
       child: Padding(
         padding: const EdgeInsets.all(layout.padding * 0.75),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Text(
-              'Sign up   ',
-              style: txt.button,
-            ),
-            Icon(
-              Icons.person_add,
-              color: Colors.white,
-              size: layout.iconMedium,
-            )
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Text(
+                'Sign up   ',
+                style: txt.button,
+              ),
+              Icon(
+                Icons.person_add,
+                color: Colors.white,
+                size: layout.iconMedium,
+              )
+            ]),
       ),
     );
   }
@@ -548,21 +528,18 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
   Widget _haveAccount() {
     return Center(
       child: RichText(
-        text: TextSpan(
-          children: [
-            const TextSpan(
-              text: 'Already have an account?',
-              style: txt.body2Light,
-            ),
-            const TextSpan(text: '     '),
-            TextSpan(
-              recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
-              text: 'Login',
-              style: txt.mediumTextButton,
-            ),
-          ],
-        ),
+        text: TextSpan(children: [
+          const TextSpan(
+            text: 'Already have an account?',
+            style: txt.body2Light,
+          ),
+          const TextSpan(text: '     '),
+          TextSpan(
+            recognizer: TapGestureRecognizer()..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
+            text: 'Login',
+            style: txt.mediumTextButton,
+          ),
+        ]),
       ),
     );
   }
@@ -575,51 +552,46 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
           title: const Text(
             'Choose image source:',
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                onTap: () {
-                  _getFromCamera();
-                },
-                child: Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(layout.padding / 2),
-                      child: Icon(
-                        Icons.camera,
-                        color: clr.primary,
-                      ),
+          content: Column(mainAxisSize: MainAxisSize.min, children: [
+            InkWell(
+              onTap: () {
+                _getFromCamera();
+              },
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.all(layout.padding / 2),
+                    child: Icon(
+                      Icons.camera,
+                      color: clr.primary,
                     ),
-                    Text(
-                      '  Camera',
-                      style: txt.body2Dark,
-                    ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    '  Camera',
+                    style: txt.body2Dark,
+                  ),
+                ],
               ),
-              InkWell(
-                onTap: () {
-                  _getFromGallery();
-                },
-                child: Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(layout.padding / 2),
-                      child: Icon(
-                        Icons.image,
-                        color: clr.primary,
-                      ),
-                    ),
-                    Text(
-                      '  Gallery',
-                      style: txt.body2Dark,
-                    ),
-                  ],
+            ),
+            InkWell(
+              onTap: () {
+                _getFromGallery();
+              },
+              child: Row(children: const [
+                Padding(
+                  padding: EdgeInsets.all(layout.padding / 2),
+                  child: Icon(
+                    Icons.image,
+                    color: clr.primary,
+                  ),
                 ),
-              ),
-            ],
-          ),
+                Text(
+                  '  Gallery',
+                  style: txt.body2Dark,
+                ),
+              ]),
+            ),
+          ]),
         );
       },
     );

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ijob/screens/search/search_jobs.dart';
 import 'package:ijob/widgets/job_tile.dart';
@@ -8,7 +7,6 @@ import '../../services/global_variables.dart';
 import '../../styles/clr.dart';
 import '../../styles/layout.dart';
 import '../../styles/txt.dart';
-import '../../widgets/main_app_bar.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/box_decoration_gradient.dart';
 
@@ -23,44 +21,43 @@ class _JobsState extends State<Jobs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecorationGradient(),
+      decoration: boxDecorationGradient(),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          elevation: 0,
-          flexibleSpace: Container(
-            decoration: BoxDecorationGradient(),
-          ),
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: jobCategoryFilter != null
-              ? Text(
-                  jobCategoryFilter.toString(),
-                  style: txt.body2Dark,
-                )
-              : const Text(
-                  "All Jobs",
-                  style: txt.body2Dark,
-                ),
-          leading: IconButton(
-            onPressed: () {
-              _showJobCategoriesDialog();
-            },
-            icon: const Icon(
-              Icons.business,
-              color: clr.primary,
-              size: layout.iconMedium,
+            elevation: 0,
+            flexibleSpace: Container(
+              decoration: boxDecorationGradient(),
             ),
-          ),
-          actions: [
-            IconButton(
+            automaticallyImplyLeading: false,
+            centerTitle: true,
+            title: jobCategoryFilter != null
+                ? Text(
+                    jobCategoryFilter.toString(),
+                    style: txt.body2Dark,
+                  )
+                : const Text(
+                    "All Jobs",
+                    style: txt.body2Dark,
+                  ),
+            leading: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => SearchJobs())));
+                _showJobCategoriesDialog();
               },
-              icon: const Icon(Icons.search, color: clr.primary, size: layout.iconMedium),
+              icon: const Icon(
+                Icons.business,
+                color: clr.primary,
+                size: layout.iconMedium,
+              ),
             ),
-          ],
-        ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => SearchJobs())));
+                },
+                icon: const Icon(Icons.search, color: clr.primary, size: layout.iconMedium),
+              ),
+            ]),
         bottomNavigationBar: BottomNavBar(navIndex: 0),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: FirebaseFirestore.instance
@@ -71,13 +68,9 @@ class _JobsState extends State<Jobs> {
               .snapshots(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // CONNECTION IS WAITING
               return const Center(child: CircularProgressIndicator());
-            } // CONNECTION IS WAITING
-            else if (snapshot.connectionState == ConnectionState.active) {
-              // CONNECTION STATE IS ACTIVE
+            } else if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.data?.docs.isNotEmpty == true) {
-                // SNAPSHOT IS NOT EMPTY
                 return Padding(
                   padding: const EdgeInsets.only(
                     top: 0,
@@ -88,7 +81,6 @@ class _JobsState extends State<Jobs> {
                   child: ListView.builder(
                       itemCount: snapshot.data?.docs.length,
                       itemBuilder: (BuildContext context, int index) {
-                        // ITEM BUILDER
                         return JobTile(
                           jobID: snapshot.data.docs[index]['job_id'],
                           jobTitle: snapshot.data.docs[index]['title'],
@@ -100,30 +92,25 @@ class _JobsState extends State<Jobs> {
                           jobLocation: snapshot.data.docs[index]['location'],
                           recruiting: snapshot.data.docs[index]['recruiting'],
                         );
-                      } // ITEM BUILDER
-                      ),
+                      }),
                 );
-              } // SNAPSHOT IS NOT EMPTY
-              else {
-                // SNAPSHOT IS EMPTY (IE NO RESULTS)
+              } else {
                 return Padding(
                   padding: const EdgeInsets.all(layout.padding * 6),
                   child: Center(
                     child: Image.asset('assets/images/empty.png'),
                   ),
                 );
-              } // SNAPSHOT IS EMPTY (IE NO RESULTS)
-            } // CONNECTION STATE IS ACTIVE
-            else {
-              // CONNECTION STATE IS NOT WAITING OR ACTIVE
+              }
+            } else {
               return Center(
                 child: Text(
                   'FATAL ERROR',
                   style: txt.error,
                 ),
               );
-            } // CONNECTION STATE IS NOT WAITING OR ACTIVE
-          }, // BUILDER FROM QUERY
+            }
+          },
         ),
       ),
     );
@@ -159,104 +146,89 @@ class _JobsState extends State<Jobs> {
                       jobCategoryFilter = jobCategories[index];
                     });
                     Navigator.canPop(context) ? Navigator.pop(context) : null;
-                    print('jobCategoryFilet, ${jobCategoryFilter}');
                   },
                   child: Padding(
                     padding: EdgeInsets.only(
                       bottom: index != jobCategories.length - 1 ? layout.padding : 0,
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.business,
-                          color: clr.passiveLight,
-                          size: 25.0,
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              left: layout.padding * 1.25,
-                            ),
-                            child: Text(
-                              jobCategories[index],
-                              style: txt.body2Light.copyWith(color: clr.passiveLight),
-                            ),
+                    child: Row(children: [
+                      Icon(
+                        Icons.business,
+                        color: clr.passiveLight,
+                        size: 25.0,
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: layout.padding * 1.25,
+                          ),
+                          child: Text(
+                            jobCategories[index],
+                            style: txt.body2Light.copyWith(color: clr.passiveLight),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ]),
                   ),
                 );
               }),
             ),
           ),
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    jobCategoryFilter = null;
+                  });
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: layout.padding,
+                    bottom: layout.padding * 2,
+                  ),
+                  child: Row(children: [
+                    Icon(
+                      Icons.clear_all,
+                      color: clr.passiveLight,
+                      size: layout.iconSmall,
+                    ),
+                    const Text(
+                      ' Clear Filter',
+                      style: txt.body1Light,
+                    ),
+                  ]),
+                ),
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 InkWell(
                   onTap: () {
-                    setState(() {
-                      jobCategoryFilter = null;
-                    });
+                    // setState(() {
+                    //   jobCategoryFilter = null;
+                    // });
                     Navigator.canPop(context) ? Navigator.pop(context) : null;
-                    print('job filter cleared');
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
                       right: layout.padding,
                       bottom: layout.padding * 2,
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.clear_all,
-                          color: clr.passiveLight,
-                          size: layout.iconSmall,
-                        ),
-                        const Text(
-                          ' Clear Filter',
-                          style: txt.body1Light,
-                        ),
-                      ],
-                    ),
+                    child: Row(children: [
+                      Icon(
+                        Icons.close,
+                        color: clr.passiveLight,
+                        size: layout.iconSmall,
+                      ),
+                      const Text(
+                        ' Close',
+                        style: txt.button,
+                      ),
+                    ]),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        // setState(() {
-                        //   jobCategoryFilter = null;
-                        // });
-                        Navigator.canPop(context) ? Navigator.pop(context) : null;
-                        print('Filter window closed');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          right: layout.padding,
-                          bottom: layout.padding * 2,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.close,
-                              color: clr.passiveLight,
-                              size: layout.iconSmall,
-                            ),
-                            const Text(
-                              ' Close',
-                              style: txt.button,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ]),
+            ]),
           ],
         );
       },

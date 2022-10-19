@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../styles/clr.dart';
 import '../styles/layout.dart';
 import "../styles/txt.dart";
 
@@ -17,13 +16,12 @@ class GlobalMethod {
       context: context,
       builder: (context) {
         return AlertDialog(
-          elevation: layout.elevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(layout.radius),
-          ),
-          backgroundColor: Colors.white,
-          title: Row(
-            children: [
+            elevation: layout.elevation,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(layout.radius),
+            ),
+            backgroundColor: Colors.white,
+            title: Row(children: [
               Padding(
                 padding: const EdgeInsets.all(layout.padding / 2),
                 child: Icon(
@@ -41,67 +39,23 @@ class GlobalMethod {
                   ),
                 ),
               ),
-            ],
-          ),
-          content: Text(
-            body,
-            style: txt.body2Dark,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.canPop(context) ? Navigator.pop(context) : null;
-              },
-              child: Text(
-                buttonText,
-                style: txt.dialogOptions,
-              ),
+            ]),
+            content: Text(
+              body,
+              style: txt.body2Dark,
             ),
-          ],
-        );
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                },
+                child: Text(
+                  buttonText,
+                  style: txt.dialogOptions,
+                ),
+              ),
+            ]);
       },
     );
-    //   showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         title: Row(
-    //           children: const [
-    //             Padding(
-    //               padding: EdgeInsets.all(layout.padding),
-    //               child: Icon(
-    //                 Icons.warning_amber_outlined,
-    //                 color: Colors.grey,
-    //                 size: 55,
-    //               ),
-    //             ),
-    //             Padding(
-    //               padding: EdgeInsets.all(8.0),
-    //               child: Text('Error occured'),
-    //             ),
-    //           ],
-    //         ),
-    //         content: Text(
-    //           error,
-    //           style: const TextStyle(
-    //             color: Colors.black,
-    //             fontSize: 20,
-    //             fontStyle: FontStyle.italic,
-    //           ),
-    //         ),
-    //         actions: [
-    //           TextButton(
-    //             onPressed: () {
-    //               Navigator.canPop(context) ? Navigator.pop(context) : null;
-    //             },
-    //             child: const Text(
-    //               'OK',
-    //               style: TextStyle(color: Colors.red),
-    //             ),
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   );
   }
 }

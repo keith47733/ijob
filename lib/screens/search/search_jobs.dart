@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/box_decoration_gradient.dart';
-import '../../styles/clr.dart';
 import '../../styles/layout.dart';
 import '../../styles/txt.dart';
+import '../../widgets/box_decoration_gradient.dart';
 
 class SearchJobs extends StatefulWidget {
   @override
@@ -16,13 +15,13 @@ class _SearchJobsState extends State<SearchJobs> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
-        decoration: BoxDecorationGradient(),
+        decoration: boxDecorationGradient(),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: layout.elevation,
             flexibleSpace: Container(
-              decoration: BoxDecorationGradient(),
+              decoration: boxDecorationGradient(),
             ),
             title: const Text(
               'Search Jobs',
